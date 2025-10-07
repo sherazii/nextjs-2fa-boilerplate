@@ -1,3 +1,4 @@
+import { ToastContainer } from "react-toastify";
 import "./globals.css";
 
 export const metadata = {
@@ -12,6 +13,7 @@ export default function RootLayout({ children }) {
         className={` antialiased font-[M_PLUS_Rounded]`}
         suppressHydrationWarning={true}
       >
+        <ToastContainer />
         {children}
       </body>
     </html>

@@ -16,6 +16,7 @@ export async function POST(request) {
 
     // Parse incoming request data
     const payload = await request.json();
+    
 
     // Validate required fields: email + password
     const validationSchema = zSchema
