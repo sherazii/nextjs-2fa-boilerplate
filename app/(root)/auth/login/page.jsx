@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardAction,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
+import Logo from "@/public/assets/images/logo-black.png";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,48 +24,94 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Image from "next/image";
+import { zSchema } from "@/lib/zodSchema";
 const LoginPagge = () => {
-  const formSchema = z.object({
-    username: z.string().min(2).max(50),
-  });
+  const [isTypePassword, setIsTypePassword] = useState(true);
+  const formSchema = zSchema
+    .pick({
+      email: true,
+    })
+    .extend({
+      password: z.string().min(3, "password is required"),
+    });
   // 1. Define your form.
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      eamil: "",
+      password: "",
     },
   });
 
-  const loginHandler = () => {}
+  const loginHandler = (values) => {
+    console.log(values);
+  };
   return (
-    <Card>
+    <Card className="w-100 text-center">
       <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card Description</CardDescription>
-        <CardAction>Card Action</CardAction>
+        <div className="flex justify-center">
+          <Image
+            src={Logo}
+            className="max-w-[150px] h-auto"
+            alt="logoImg"
+            priority
+          />
+        </div>
+        <CardTitle className="w-full text-center text-3xl font-bold font-[Pacifico] text-orange-500">
+          Login Into Account
+        </CardTitle>
+        <p>Login into your account by filling out the form below.</p>
       </CardHeader>
       <CardContent>
-         <Form {...form}>
-      <form onSubmit={form.handleSubmit(loginHandler)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(loginHandler)}
+            className="space-y-8"
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter Your Email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="relative">
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="************"
+                      type={isTypePassword ? "password" : "text"}
+                      {...field}
+                    />
+                  </FormControl>
+                  <button
+                    type="button"
+                    className="absolute right-4 top-[38px] cursor-pointer"
+                    onClick={() => setIsTypePassword(!isTypePassword)}
+                  >
+                    {isTypePassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit">Submit</Button>
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );
