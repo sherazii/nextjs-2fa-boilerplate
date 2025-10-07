@@ -28,31 +28,44 @@ import Image from "next/image";
 import { zSchema } from "@/lib/zodSchema";
 import ButtonLoading from "@/components/application/ButtonLoading";
 import Link from "next/link";
-import { WEBSITE_REGISTER, WEBSITE_RESETPASSWORD } from "@/routes/WebsiteRooute";
-const LoginPagge = () => {
+import {
+  WEBSITE_LOGIN,
+  WEBSITE_REGISTER,
+  WEBSITE_RESETPASSWORD,
+} from "@/routes/WebsiteRooute";
+const RegisterPage = () => {
   const [isTypePassword, setIsTypePassword] = useState(true);
   const [loading, setLoading] = useState(false);
+  // ✅ Add confirmPassword to schema and refine
   const formSchema = zSchema
     .pick({
+      name: true,
       email: true,
+      password: true,
     })
     .extend({
-      password: z.string().min(3, "password is required"),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      path: ["confirmPassword"],
+      message: "Passwords do not match",
     });
-  // 1. Define your form.
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      eamil: "",
+      name: "",
+      email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
-  const loginHandler = (values) => {
+  const RegisterSubmitHandler = (values) => {
     console.log(values);
   };
   return (
-    <Card className="w-100 text-center">
+    <Card className="w-120 text-center">
       <CardHeader>
         <div className="flex justify-center">
           <Image
@@ -63,16 +76,32 @@ const LoginPagge = () => {
           />
         </div>
         <CardTitle className="w-full text-center text-3xl font-bold font-[Pacifico] text-orange-500">
-          Login Into Account
+          Signup
         </CardTitle>
-        <p>Login into your account by filling out the form below.</p>
+        <p>Create an account by filling out the form below.</p>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(loginHandler)}
+            onSubmit={form.handleSubmit(RegisterSubmitHandler)}
             className="space-y-8"
           >
+            {/* Name */}
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter Your Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Email */}
             <FormField
               control={form.control}
               name="email"
@@ -87,6 +116,7 @@ const LoginPagge = () => {
               )}
             />
 
+            {/* Password */}
             <FormField
               control={form.control}
               name="password"
@@ -102,7 +132,33 @@ const LoginPagge = () => {
                   </FormControl>
                   <button
                     type="button"
-                    className="absolute right-4 top-[38px] cursor-pointer"
+                    className="absolute top-1/2 right-4 cursor-pointer"
+                    onClick={() => setIsTypePassword(!isTypePassword)}
+                  >
+                    {isTypePassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Confirm Password */}
+            <FormField
+              control={form.control}
+              name="confirmPassword" // ✅ must match schema key
+              render={({ field }) => (
+                <FormItem className="relative">
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="************"
+                      type={isTypePassword ? "password" : "text"}
+                      {...field}
+                    />
+                  </FormControl>
+                  <button
+                    type="button"
+                    className="absolute top-1/2 right-4 cursor-pointer"
                     onClick={() => setIsTypePassword(!isTypePassword)}
                   >
                     {isTypePassword ? <FaEyeSlash /> : <FaEye />}
@@ -115,28 +171,21 @@ const LoginPagge = () => {
             <ButtonLoading
               type="submit"
               className="w-full rounded-full mt-4 cursor-pointer"
-              text="Login"
+              text="Signup"
               loading={loading}
             />
+
+            <div className="flex items-center justify-center gap-2">
+              <span>Already have an account?</span>
+              <Link href={WEBSITE_LOGIN} className="text-blue-600 underline">
+                Login into your Account
+              </Link>
+            </div>
           </form>
-          <div className="flex items-center justify-center gap-2">
-            <span>Don't have an account?</span>
-            <Link href={WEBSITE_REGISTER} className="text-blue-600 underline">
-              Create an Account
-            </Link>
-          </div>
-          <div className="mt-3">
-            <Link
-              href={WEBSITE_RESETPASSWORD}
-              className="text-blue-600 underline"
-            >
-              Forgot password?
-            </Link>
-          </div>
         </Form>
       </CardContent>
     </Card>
   );
 };
 
-export default LoginPagge;
+export default RegisterPage;
