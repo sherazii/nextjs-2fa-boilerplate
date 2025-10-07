@@ -17,7 +17,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -27,8 +26,10 @@ import { Input } from "@/components/ui/input";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Image from "next/image";
 import { zSchema } from "@/lib/zodSchema";
+import ButtonLoading from "@/components/application/ButtonLoading";
 const LoginPagge = () => {
   const [isTypePassword, setIsTypePassword] = useState(true);
+  const [loading, setLoading] = useState(false);
   const formSchema = zSchema
     .pick({
       email: true,
@@ -109,7 +110,13 @@ const LoginPagge = () => {
               )}
             />
 
-            <Button type="submit">Submit</Button>
+             <ButtonLoading
+                  type="submit"
+                  className="w-full rounded-full mt-4 cursor-pointer"
+                  text="Login"
+                  loading={loading}
+                />
+
           </form>
         </Form>
       </CardContent>
