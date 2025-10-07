@@ -31,8 +31,8 @@ import Link from "next/link";
 import {
   WEBSITE_LOGIN,
   WEBSITE_REGISTER,
-  WEBSITE_RESETPASSWORD,
-} from "@/routes/WebsiteRooute";
+  WEBSITE_RESETPASSWORD
+} from "@/routes/WebsiteRoute";
 import axios from "axios";
 const RegisterPage = () => {
   const [isTypePassword, setIsTypePassword] = useState(true);

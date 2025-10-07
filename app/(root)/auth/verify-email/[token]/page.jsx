@@ -9,7 +9,7 @@ import unVerifiedImg from "@/public/assets/images/verification-failed.gif";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { WEBSITE_HOME } from "@/routes/WebsiteRooute";
+import { WEBSITE_HOME } from "@/routes/WebsiteRoute";
 
 const EmailVerificationPage = () => {
   const { token } = useParams(); // ✅ Get the token from the URL
