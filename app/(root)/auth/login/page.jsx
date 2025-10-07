@@ -1,81 +1,74 @@
+"use client";
+import React from "react";
 import {
   Card,
+  CardAction,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Logo from "@/public/assets/images/logo-black.png";
-import Image from "next/image";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-const LoginPage = () => {
+const LoginPagge = () => {
+  const formSchema = z.object({
+    username: z.string().min(2).max(50),
+  });
+  // 1. Define your form.
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+    },
+  });
+
+  const loginHandler = () => {}
   return (
     <Card>
       <CardHeader>
-        <div className="flex justify-center">
-          <Image
-            src={Logo}
-            className="max-w-[150px] h-auto"
-            alt="logoImg"
-            priority
-          />
-        </div>
-        <CardTitle className="w-full text-center text-3xl font-bold font-[Pacifico] text-orange-500">
-          Login Into Account
-        </CardTitle>
-        <p>Login into your account by filling out the form below.</p>
+        <CardTitle>Card Title</CardTitle>
+        <CardDescription>Card Description</CardDescription>
+        <CardAction>Card Action</CardAction>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(LoginSubmitHandler)}
-            className="space-y-8"
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter Your Email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className="relative">
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="************"
-                      type={isTypePassword ? "password" : "text"}
-                      {...field}
-                    />
-                  </FormControl>
-                  <button
-                    type="button"
-                    className="absolute right-4 top-[38px] cursor-pointer"
-                    onClick={() => setIsTypePassword(!isTypePassword)}
-                  >
-                    {isTypePassword ? <FaEyeSlash /> : <FaEye />}
-                  </button>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
+         <Form {...form}>
+      <form onSubmit={form.handleSubmit(loginHandler)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormDescription>
+                This is your public display name.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
       </CardContent>
     </Card>
   );
 };
 
-export default LoginPage;
+export default LoginPagge;
