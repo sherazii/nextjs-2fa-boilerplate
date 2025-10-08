@@ -28,7 +28,9 @@ MongoDB / Prisma
 
 Zod for schema validation
 
-JWT & OTP Libraries
+JWT/Jose & OTP Libraries
+
+Toastify form decent alerts 
 
 Tailwind CSS / ShadCN UI
 
