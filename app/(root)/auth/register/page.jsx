@@ -64,12 +64,12 @@ const RegisterPage = () => {
 
   const RegisterSubmitHandler =async (values) => {
     try {
-    // Exclude confirmPassword before sending to backend
+    // Exclude confirmPassword before sending to backend edited 
     const { confirmPassword, ...data } = values;
 
     setLoading(true);
 
-    // ✅ Call backend API to register new user
+    // ✅ Call backend API to register new user edited
     const { data: registerResponse } = await axios.post(
       "/api/auth/register",
       data
