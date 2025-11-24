@@ -52,7 +52,7 @@ const LoginPage = () => {
     try {
       setLoading(true);
 
-      // ✅ Call backend API to log in the user
+      // ✅ Call backend API to log in the user edited
       const { data: loginResponse } = await axios.post("/api/auth/login", data);
 
       // ✅ If backend reports failure, throw an error to trigger catch block
@@ -64,7 +64,7 @@ const LoginPage = () => {
       // ✅ Reset the form after successful login
       form.reset();
 
-      // ✅ Show success message
+      // ✅ Show success message edited 
       showToast("success", loginResponse.message);
     } catch (error) {
       // ✅ Handle both backend and network errors gracefully
